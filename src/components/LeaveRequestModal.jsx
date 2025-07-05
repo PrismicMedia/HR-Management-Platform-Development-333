@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../utils/translations';
+import { useLeave } from '../hooks/useSupabase';
+import { useAuthStore } from '../store/authStore';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import toast from 'react-hot-toast';
@@ -9,6 +11,8 @@ const { FiX, FiCalendar } = FiIcons;
 
 const LeaveRequestModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
+  const { user } = useAuthStore();
+  const { createLeaveRequest, loading } = useLeave();
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -24,7 +28,7 @@ const LeaveRequestModal = ({ isOpen, onClose }) => {
     { value: 'emergency', label: 'Emergency' }
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validate dates
@@ -38,9 +42,34 @@ const LeaveRequestModal = ({ isOpen, onClose }) => {
     const end = new Date(formData.endDate);
     const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
-    console.log('Leave request:', { ...formData, days });
-    toast.success('Leave request submitted successfully!');
-    onClose();
+    const leaveData = {
+      user_id: user?.id,
+      start_date: formData.startDate,
+      end_date: formData.endDate,
+      days: formData.halfDay ? 0.5 : days,
+      type: formData.type,
+      reason: formData.reason,
+      half_day: formData.halfDay,
+      status: 'pending'
+    };
+
+    try {
+      await createLeaveRequest(leaveData);
+      toast.success('Leave request submitted successfully!');
+      onClose();
+      
+      // Reset form
+      setFormData({
+        startDate: '',
+        endDate: '',
+        type: 'vacation',
+        reason: '',
+        halfDay: false
+      });
+    } catch (error) {
+      toast.error('Failed to submit leave request');
+      console.error('Leave request error:', error);
+    }
   };
 
   const handleReset = () => {
@@ -94,7 +123,6 @@ const LeaveRequestModal = ({ isOpen, onClose }) => {
                     required
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     End Date
@@ -170,9 +198,10 @@ const LeaveRequestModal = ({ isOpen, onClose }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                  disabled={loading}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                 >
-                  {t('submit')}
+                  {loading ? 'Submitting...' : t('submit')}
                 </button>
               </div>
             </form>

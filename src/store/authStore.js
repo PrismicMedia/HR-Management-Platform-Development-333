@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { supabase } from '../lib/supabase'
 
 export const useAuthStore = create(
   persist(
@@ -7,62 +8,135 @@ export const useAuthStore = create(
       user: null,
       isAuthenticated: false,
       loading: false,
-      
+
       login: async (credentials) => {
-        set({ loading: true });
+        set({ loading: true })
+        
         try {
-          // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          console.log('🔐 Attempting login...', credentials.email)
           
-          // Mock user data based on credentials
-          const mockUser = {
-            id: 1,
+          // Try Supabase authentication first
+          const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email: credentials.email,
-            name: credentials.email === 'admin@agency.com' ? 'Admin User' : 'John Doe',
-            role: credentials.email === 'admin@agency.com' ? 'superadmin' : 'staff',
-            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(credentials.email === 'admin@agency.com' ? 'Admin User' : 'John Doe')}&background=0ea5e9&color=fff`,
-            department: 'Engineering',
-            joinDate: '2024-01-15',
-            skills: ['React', 'JavaScript', 'Node.js'],
-            leaveBalance: 25,
-            kpis: [
-              { id: 1, name: 'Code Quality', current: 85, target: 90, unit: '%' },
-              { id: 2, name: 'Tasks Completed', current: 23, target: 25, unit: 'tasks' },
-              { id: 3, name: 'Client Satisfaction', current: 4.2, target: 4.5, unit: '/5' }
-            ]
-          };
-          
-          set({ user: mockUser, isAuthenticated: true, loading: false });
-          return { success: true };
+            password: credentials.password
+          })
+
+          if (authError) {
+            console.log('🔄 Supabase auth failed, trying demo login:', authError.message)
+            
+            // Demo login fallback
+            const demoUsers = {
+              'admin@agency.com': {
+                id: '1',
+                email: 'admin@agency.com',
+                name: 'Admin User',
+                role: 'superadmin',
+                department: 'Management',
+                avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=0ea5e9&color=fff'
+              },
+              'john.doe@agency.com': {
+                id: '2', 
+                email: 'john.doe@agency.com',
+                name: 'John Doe',
+                role: 'staff',
+                department: 'Engineering',
+                avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=0ea5e9&color=fff'
+              }
+            }
+
+            const demoUser = demoUsers[credentials.email]
+            if (demoUser && credentials.password === 'password') {
+              console.log('✅ Demo login successful')
+              set({ 
+                user: { ...demoUser, leaveBalance: 25 }, 
+                isAuthenticated: true, 
+                loading: false 
+              })
+              return { success: true }
+            }
+
+            throw new Error('Invalid email or password')
+          }
+
+          // Get user profile from database
+          const { data: profile, error: profileError } = await supabase
+            .from('users_hr_dash')
+            .select('*')
+            .eq('email', credentials.email)
+            .single()
+
+          if (profileError) {
+            console.log('👤 Creating new user profile...')
+            // Create new user profile
+            const { data: newProfile, error: createError } = await supabase
+              .from('users_hr_dash')
+              .insert([{
+                email: authData.user.email,
+                name: authData.user.user_metadata?.full_name || authData.user.email.split('@')[0],
+                role: 'staff',
+                status: 'active'
+              }])
+              .select()
+              .single()
+
+            if (createError) throw createError
+
+            const user = {
+              ...authData.user,
+              ...newProfile,
+              avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(newProfile.name)}&background=0ea5e9&color=fff`
+            }
+
+            set({ user, isAuthenticated: true, loading: false })
+            return { success: true }
+          }
+
+          const user = {
+            ...authData.user,
+            ...profile,
+            avatar: profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=0ea5e9&color=fff`
+          }
+
+          console.log('✅ Login successful:', user.name)
+          set({ user, isAuthenticated: true, loading: false })
+          return { success: true }
+
         } catch (error) {
-          set({ loading: false });
-          return { success: false, error: error.message };
+          console.error('❌ Login error:', error)
+          set({ loading: false })
+          return { success: false, error: error.message }
         }
       },
-      
-      logout: () => {
-        set({ user: null, isAuthenticated: false });
+
+      logout: async () => {
+        try {
+          await supabase.auth.signOut()
+        } catch (error) {
+          console.error('Logout error:', error)
+        }
+        set({ user: null, isAuthenticated: false })
       },
-      
+
       updateUser: (userData) => {
-        set(state => ({
-          user: { ...state.user, ...userData }
-        }));
+        const { user } = get()
+        if (user) {
+          set({ user: { ...user, ...userData } })
+        }
       },
-      
+
       hasPermission: (permission) => {
-        const { user } = get();
-        if (!user) return false;
-        
+        const { user } = get()
+        if (!user) return false
+
         const rolePermissions = {
           superadmin: ['all'],
-          manager: ['approve_leave', 'manage_team', 'view_reports', 'assign_tasks'],
+          manager: ['approve_leave', 'manage_team', 'view_reports'],
           team_leader: ['endorse_leave', 'assign_tasks', 'view_team'],
           staff: ['view_own', 'request_leave', 'update_tasks']
-        };
-        
-        const userPermissions = rolePermissions[user.role] || [];
-        return userPermissions.includes('all') || userPermissions.includes(permission);
+        }
+
+        const userPermissions = rolePermissions[user.role] || []
+        return userPermissions.includes('all') || userPermissions.includes(permission)
       }
     }),
     {
@@ -73,4 +147,4 @@ export const useAuthStore = create(
       })
     }
   )
-);
+)

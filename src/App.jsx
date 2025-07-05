@@ -4,14 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import { useLanguageStore } from './store/languageStore';
-
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import PerformanceReviews from './pages/PerformanceReviews';
 import GrowthPlan from './pages/GrowthPlan';
 import Leave from './pages/Leave';
 import Skills from './pages/Skills';
@@ -19,7 +18,6 @@ import Payslips from './pages/Payslips';
 import AdminConsole from './pages/AdminConsole';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
-
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -56,6 +54,7 @@ function App() {
               <Layout>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
+                  <Route path="/performance" element={<PerformanceReviews />} />
                   <Route path="/growth-plan" element={<GrowthPlan />} />
                   <Route path="/leave" element={<Leave />} />
                   <Route path="/skills" element={<Skills />} />
@@ -70,6 +69,7 @@ function App() {
               </Layout>
             )}
           </Router>
+
           <Toaster
             position="top-right"
             toastOptions={{

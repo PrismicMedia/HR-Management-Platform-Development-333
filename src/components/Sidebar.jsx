@@ -6,10 +6,7 @@ import { useTranslation } from '../utils/translations';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 
-const { 
-  FiHome, FiTrendingUp, FiCalendar, FiAward, 
-  FiFileText, FiUser, FiSettings, FiShield, FiLogOut 
-} = FiIcons;
+const { FiHome, FiTrendingUp, FiCalendar, FiAward, FiFileText, FiUser, FiSettings, FiShield, FiLogOut, FiStar } = FiIcons;
 
 const Sidebar = ({ onClose }) => {
   const { user, logout, hasPermission } = useAuthStore();
@@ -17,6 +14,7 @@ const Sidebar = ({ onClose }) => {
 
   const navigation = [
     { name: t('dashboard'), href: '/', icon: FiHome },
+    { name: 'Performance', href: '/performance', icon: FiStar },
     { name: t('growthPlan'), href: '/growth-plan', icon: FiTrendingUp },
     { name: t('leave'), href: '/leave', icon: FiCalendar },
     { name: t('skills'), href: '/skills', icon: FiAward },

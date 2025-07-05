@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../utils/translations';
+import { useSkills } from '../hooks/useSupabase';
+import { useAuthStore } from '../store/authStore';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import toast from 'react-hot-toast';
@@ -9,13 +11,14 @@ const { FiX, FiCode, FiDatabase, FiLayers, FiTrendingUp } = FiIcons;
 
 const SkillModal = ({ isOpen, onClose, skill }) => {
   const { t } = useTranslation();
-  
+  const { user } = useAuthStore();
+  const { createSkill, updateSkill, loading } = useSkills();
   const [formData, setFormData] = useState({
-    name: '',
-    category: 'Frontend',
-    proficiency: 1,
-    icon: 'FiCode',
-    notes: ''
+    name: skill?.name || '',
+    category: skill?.category || 'Frontend',
+    proficiency: skill?.proficiency || 1,
+    icon: skill?.icon || 'FiCode',
+    notes: skill?.notes || ''
   });
 
   const categories = [
@@ -34,11 +37,31 @@ const SkillModal = ({ isOpen, onClose, skill }) => {
     { value: 4, label: t('expert'), description: 'Can teach others' }
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Skill data:', formData);
-    toast.success(skill ? 'Skill updated successfully!' : 'Skill added successfully!');
-    onClose();
+    
+    const skillData = {
+      user_id: user?.id,
+      name: formData.name,
+      category: formData.category,
+      proficiency: formData.proficiency,
+      icon: formData.icon,
+      notes: formData.notes
+    };
+
+    try {
+      if (skill) {
+        await updateSkill(skill.id, skillData);
+        toast.success('Skill updated successfully!');
+      } else {
+        await createSkill(skillData);
+        toast.success('Skill added successfully!');
+      }
+      onClose();
+    } catch (error) {
+      toast.error('Failed to save skill');
+      console.error('Skill save error:', error);
+    }
   };
 
   return (
@@ -151,9 +174,10 @@ const SkillModal = ({ isOpen, onClose, skill }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                  disabled={loading}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                 >
-                  {skill ? t('save') : 'Add Skill'}
+                  {loading ? 'Saving...' : (skill ? t('save') : 'Add Skill')}
                 </button>
               </div>
             </form>

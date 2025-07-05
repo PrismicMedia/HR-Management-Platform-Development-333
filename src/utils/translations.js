@@ -55,6 +55,11 @@ export const translations = {
     intermediate: 'Intermediate',
     advanced: 'Advanced',
     expert: 'Expert',
+
+    // SOPs
+    sops: 'SOPs',
+    addSop: 'Add SOP',
+    editSop: 'Edit SOP',
     
     // Messages
     loginSuccess: 'Login successful!',
@@ -121,6 +126,11 @@ export const translations = {
     intermediate: 'متوسط',
     advanced: 'متقدم',
     expert: 'خبير',
+
+    // SOPs
+    sops: 'الإجراءات',
+    addSop: 'إضافة إجراء',
+    editSop: 'تعديل الإجراء',
     
     // Messages
     loginSuccess: 'تم تسجيل الدخول بنجاح!',

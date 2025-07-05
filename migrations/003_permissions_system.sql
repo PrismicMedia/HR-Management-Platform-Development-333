@@ -128,41 +128,46 @@ INSERT INTO global_permissions (key, label, description, category, is_system) VA
 ('user_roles', 'User Roles', 'Manage user roles and permissions', 'System Administration', true),
 ('audit_logs', 'Audit Logs', 'View system audit trails', 'System Administration', true),
 ('backup_restore', 'Backup & Restore', 'System backup operations', 'System Administration', true),
-('manage_permissions', 'Manage Permissions', 'Add, edit, delete permissions', 'System Administration', true)
+('manage_permissions', 'Manage Permissions', 'Add, edit, delete permissions', 'System Administration', true),
+('view_sops', 'View SOPs', 'View standard operating procedures', 'System Documentation', true),
+('manage_sops', 'Manage SOPs', 'Create and edit SOPs', 'System Documentation', true)
 ON CONFLICT (key) DO NOTHING;
 
 -- Set up default role permissions
 -- Staff permissions
 INSERT INTO role_permissions (role, permission_id, enabled)
 SELECT 'staff', id, true FROM global_permissions 
-WHERE key IN (
+  WHERE key IN (
   'view_own_profile', 'edit_own_profile', 'view_own_data',
   'request_leave', 'view_own_leave',
-  'view_own_tasks', 'update_tasks'
-)
+  'view_own_tasks', 'update_tasks',
+  'view_sops'
+  )
 ON CONFLICT (role, permission_id) DO NOTHING;
 
 -- Team Leader permissions
 INSERT INTO role_permissions (role, permission_id, enabled)
 SELECT 'team_leader', id, true FROM global_permissions 
-WHERE key IN (
+  WHERE key IN (
   'view_own_profile', 'edit_own_profile', 'view_own_data',
   'request_leave', 'view_own_leave', 'endorse_leave',
   'view_own_tasks', 'update_tasks', 'assign_tasks',
-  'view_team'
-)
+  'view_team',
+  'view_sops'
+  )
 ON CONFLICT (role, permission_id) DO NOTHING;
 
 -- Manager permissions
 INSERT INTO role_permissions (role, permission_id, enabled)
 SELECT 'manager', id, true FROM global_permissions 
-WHERE key IN (
+  WHERE key IN (
   'view_own_profile', 'edit_own_profile', 'view_own_data',
   'request_leave', 'view_own_leave', 'endorse_leave', 'approve_leave',
   'view_own_tasks', 'update_tasks', 'assign_tasks', 'manage_all_tasks',
   'view_team', 'manage_team',
-  'view_reports', 'generate_reports', 'view_analytics'
-)
+  'view_reports', 'generate_reports', 'view_analytics',
+  'view_sops', 'manage_sops'
+  )
 ON CONFLICT (role, permission_id) DO NOTHING;
 
 -- Superadmin permissions (all permissions)

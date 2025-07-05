@@ -8,11 +8,15 @@ import RolePermissionsMatrix from '../components/RolePermissionsMatrix';
 import PermissionTemplates from '../components/PermissionTemplates';
 import BulkRoleManager from '../components/BulkRoleManager';
 import PermissionAuditLog from '../components/PermissionAuditLog';
+import QuickSnapshotButton from '../components/QuickSnapshotButton';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
-const { FiUsers, FiBarChart3, FiSettings, FiFileText, FiPlus, FiEdit3, FiTrash2, FiShield, FiSearch, FiFilter, FiTemplate, FiActivity, FiLayers } = FiIcons;
+const { 
+  FiUsers, FiBarChart3, FiSettings, FiFileText, FiPlus, FiEdit3, 
+  FiTrash2, FiShield, FiSearch, FiFilter, FiTemplate, FiActivity, FiLayers, FiCamera 
+} = FiIcons;
 
 const AdminConsole = () => {
   const { user, hasPermission } = useAuthStore();
@@ -45,7 +49,8 @@ const AdminConsole = () => {
       status: 'active',
       lastLogin: '2024-02-01',
       joinDate: '2023-01-15',
-      leave_balance: 25
+      leave_balance: 25,
+      avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=0ea5e9&color=fff'
     },
     {
       id: 2,
@@ -56,7 +61,8 @@ const AdminConsole = () => {
       status: 'active',
       lastLogin: '2024-02-02',
       joinDate: '2023-03-10',
-      leave_balance: 28
+      leave_balance: 28,
+      avatar: 'https://ui-avatars.com/api/?name=Jane+Smith&background=10b981&color=fff'
     },
     {
       id: 3,
@@ -67,7 +73,8 @@ const AdminConsole = () => {
       status: 'inactive',
       lastLogin: '2024-01-28',
       joinDate: '2022-08-20',
-      leave_balance: 30
+      leave_balance: 30,
+      avatar: 'https://ui-avatars.com/api/?name=Mike+Johnson&background=f59e0b&color=fff'
     },
     {
       id: 4,
@@ -78,7 +85,8 @@ const AdminConsole = () => {
       status: 'active',
       lastLogin: '2024-02-03',
       joinDate: '2023-06-05',
-      leave_balance: 23
+      leave_balance: 23,
+      avatar: 'https://ui-avatars.com/api/?name=Sarah+Wilson&background=8b5cf6&color=fff'
     },
     {
       id: 5,
@@ -89,7 +97,8 @@ const AdminConsole = () => {
       status: 'active',
       lastLogin: '2024-02-03',
       joinDate: '2022-01-01',
-      leave_balance: 30
+      leave_balance: 30,
+      avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=ef4444&color=fff'
     }
   ];
 
@@ -270,13 +279,27 @@ const AdminConsole = () => {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">User</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Last Login</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Leave Balance</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  User
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Role
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Department
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Last Login
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Leave Balance
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -305,16 +328,29 @@ const AdminConsole = () => {
                       {user.role.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{user.department}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {user.department}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(user.status)}`}>
                       {user.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{user.lastLogin}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{user.leave_balance || 0} days</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {user.lastLogin}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {user.leave_balance || 0} days
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
+                      <QuickSnapshotButton
+                        employee={user}
+                        modules={['kpis', 'skills', 'performance', 'attendance']}
+                        variant="ghost"
+                        size="sm"
+                        className="p-1"
+                      />
                       <button
                         onClick={() => handleEditUser(user)}
                         className="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
@@ -386,7 +422,9 @@ const AdminConsole = () => {
   const renderSystemSettings = () => (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">System Configuration</h3>
-      <p className="text-gray-600 dark:text-gray-400">Configure system-wide settings, integrations, and maintenance options.</p>
+      <p className="text-gray-600 dark:text-gray-400">
+        Configure system-wide settings, integrations, and maintenance options.
+      </p>
     </div>
   );
 
@@ -423,7 +461,9 @@ const AdminConsole = () => {
         className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
       >
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('admin')} Console</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {t('admin')} Console
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             Comprehensive user, role, and permission management system
           </p>

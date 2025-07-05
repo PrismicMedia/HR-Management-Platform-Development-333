@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from '../utils/translations';
+import QuickSnapshotButton from '../components/QuickSnapshotButton';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import toast from 'react-hot-toast';
@@ -58,15 +59,23 @@ const Profile = () => {
               Manage your personal information and settings
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            <SafeIcon icon={isEditing ? FiSave : FiEdit3} className="w-4 h-4 mr-2" />
-            {isEditing ? t('save') : t('edit')}
-          </motion.button>
+          <div className="flex items-center space-x-3">
+            {/* Quick Snapshot Button */}
+            <QuickSnapshotButton
+              employee={user}
+              modules={['kpis', 'skills', 'attendance', 'performance', 'leave_balance']}
+              variant="outline"
+            />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsEditing(!isEditing)}
+              className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              <SafeIcon icon={isEditing ? FiSave : FiEdit3} className="w-4 h-4 mr-2" />
+              {isEditing ? t('save') : t('edit')}
+            </motion.button>
+          </div>
         </div>
       </motion.div>
 
@@ -98,7 +107,6 @@ const Profile = () => {
                 </label>
               )}
             </div>
-            
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               {user?.name}
             </h2>
@@ -121,6 +129,24 @@ const Profile = () => {
                 </p>
               )}
             </div>
+
+            {/* Quick Actions */}
+            <div className="mt-6 space-y-2">
+              <QuickSnapshotButton
+                employee={user}
+                modules={['kpis', 'skills', 'performance']}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              />
+              <QuickSnapshotButton
+                employee={user}
+                modules={['attendance', 'leave_balance', 'goals']}
+                variant="ghost"
+                size="sm"
+                className="w-full"
+              />
+            </div>
           </div>
         </motion.div>
 
@@ -134,7 +160,6 @@ const Profile = () => {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
             Contact Information
           </h3>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

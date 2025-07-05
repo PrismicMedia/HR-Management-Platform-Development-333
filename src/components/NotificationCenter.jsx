@@ -7,7 +7,9 @@ import * as FiIcons from 'react-icons/fi';
 import { format, formatDistanceToNow } from 'date-fns';
 import toast from 'react-hot-toast';
 
-const { FiBell, FiX, FiCheck, FiCheckCircle, FiAlertTriangle, FiInfo, FiCalendar, FiUser, FiSettings, FiFilter, FiMarkAsRead } = FiIcons;
+// Feather icons library doesn't include a dedicated "MarkAsRead" icon.
+// Use FiCheckSquare to represent the "mark all read" action instead.
+const { FiBell, FiX, FiCheck, FiCheckCircle, FiCheckSquare, FiAlertTriangle, FiInfo, FiCalendar, FiUser, FiSettings, FiFilter } = FiIcons;
 
 const NotificationCenter = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
@@ -164,7 +166,7 @@ const NotificationCenter = ({ isOpen, onClose }) => {
               <div className="flex items-center space-x-3">
                 <SafeIcon icon={FiBell} className="w-6 h-6 text-primary-600" />
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Notifications
+                  {t('notifications')}
                 </h2>
                 {unreadCount > 0 && (
                   <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
@@ -177,8 +179,8 @@ const NotificationCenter = ({ isOpen, onClose }) => {
                   onClick={handleMarkAllAsRead}
                   className="flex items-center px-3 py-1 text-sm text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                 >
-                  <SafeIcon icon={FiMarkAsRead} className="w-4 h-4 mr-1" />
-                  Mark all read
+                  <SafeIcon icon={FiCheckSquare} className="w-4 h-4 mr-1" />
+                  {t('markAllRead')}
                 </button>
                 <button
                   onClick={onClose}
@@ -194,9 +196,9 @@ const NotificationCenter = ({ isOpen, onClose }) => {
               <SafeIcon icon={FiFilter} className="w-4 h-4 text-gray-500" />
               <div className="flex space-x-2">
                 {[
-                  { key: 'all', label: 'All' },
-                  { key: 'unread', label: 'Unread' },
-                  { key: 'high', label: 'High Priority' }
+                  { key: 'all', label: t('all') },
+                  { key: 'unread', label: t('unread') },
+                  { key: 'high', label: t('highPriority') }
                 ].map(filterOption => (
                   <button
                     key={filterOption.key}
@@ -218,7 +220,7 @@ const NotificationCenter = ({ isOpen, onClose }) => {
               {filteredNotifications.length === 0 ? (
                 <div className="text-center py-8">
                   <SafeIcon icon={FiBell} className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">No notifications found</p>
+                  <p className="text-gray-500 dark:text-gray-400">{t('noNotifications')}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -272,7 +274,7 @@ const NotificationCenter = ({ isOpen, onClose }) => {
                                     handleMarkAsRead(notification.id);
                                   }}
                                   className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                                  title="Mark as read"
+                                  title={t('markAsRead')}
                                 >
                                   <SafeIcon icon={FiCheck} className="w-4 h-4" />
                                 </button>
@@ -290,9 +292,9 @@ const NotificationCenter = ({ isOpen, onClose }) => {
             {/* Footer */}
             <div className="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
               <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>{filteredNotifications.length} notifications</span>
+                <span>{filteredNotifications.length} {t('notifications')}</span>
                 <button className="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">
-                  Notification Settings
+                  {t('notificationSettings')}
                 </button>
               </div>
             </div>

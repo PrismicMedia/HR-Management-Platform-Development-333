@@ -6,7 +6,7 @@ import SOPModal from '../components/SOPModal';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 
-const { FiPlus, FiEdit, FiTrash } = FiIcons;
+const { FiPlus, FiEdit, FiTrash, FiChevronDown, FiChevronUp } = FiIcons;
 
 const SOPs = () => {
   const { t } = useTranslation();
@@ -14,6 +14,7 @@ const SOPs = () => {
   const [sops, setSops] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSop, setSelectedSop] = useState(null);
+  const [expandedSop, setExpandedSop] = useState(null);
 
   const fetchSops = async () => {
     const { data } = await getSops();
@@ -39,6 +40,10 @@ const SOPs = () => {
     fetchSops();
   };
 
+  const toggleExpand = (id) => {
+    setExpandedSop(expandedSop === id ? null : id);
+  };
+
   const handleSaved = () => {
     fetchSops();
   };
@@ -56,24 +61,38 @@ const SOPs = () => {
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-        <ul className="space-y-4">
-          {sops.map((sop) => (
-            <li key={sop.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex justify-between items-start">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sop.title}</h3>
-                {sop.department && <p className="text-sm text-gray-500 dark:text-gray-400">{sop.department}</p>}
-              </div>
-              <div className="flex space-x-2">
-                <button onClick={() => handleEdit(sop)} className="text-primary-600 hover:text-primary-800">
-                  <SafeIcon icon={FiEdit} className="w-4 h-4" />
-                </button>
-                <button onClick={() => handleDelete(sop.id)} className="text-red-600 hover:text-red-800">
-                  <SafeIcon icon={FiTrash} className="w-4 h-4" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {sops.length === 0 ? (
+          <p className="text-gray-600 dark:text-gray-400">No SOPs found.</p>
+        ) : (
+          <ul className="space-y-4">
+            {sops.map((sop) => (
+              <li key={sop.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
+                <div className="flex justify-between items-start cursor-pointer" onClick={() => toggleExpand(sop.id)}>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sop.title}</h3>
+                    {sop.department && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{sop.department}</p>
+                    )}
+                  </div>
+                  <div className="flex space-x-2">
+                    <button onClick={(e) => { e.stopPropagation(); handleEdit(sop); }} className="text-primary-600 hover:text-primary-800">
+                      <SafeIcon icon={FiEdit} className="w-4 h-4" />
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); handleDelete(sop.id); }} className="text-red-600 hover:text-red-800">
+                      <SafeIcon icon={FiTrash} className="w-4 h-4" />
+                    </button>
+                    <SafeIcon icon={expandedSop === sop.id ? FiChevronUp : FiChevronDown} className="w-4 h-4 text-gray-500" />
+                  </div>
+                </div>
+                {expandedSop === sop.id && (
+                  <div className="mt-3 text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                    {sop.content}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </motion.div>
 
       <SOPModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} sop={selectedSop} onSaved={handleSaved} />

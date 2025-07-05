@@ -42,6 +42,10 @@ A modern, Apple-inspired HR management platform built with React, Supabase, and 
 - **Data Encryption** - End-to-end security
 - **Compliance Ready** - GDPR and privacy compliant
 
+## 🏆 Gamification
+
+HuRai rewards positive actions with points and badges. Complete KPIs, finish goals or help teammates to earn points. Administrators can grant or adjust points at any time. A leaderboard showcases top performers and badges celebrate milestones to keep everyone motivated.
+
 ## 🎯 Design System
 
 ### Colors

@@ -71,6 +71,8 @@ export const translations = {
     loginError: 'Login failed. Please try again.',
     saveSuccess: 'Changes saved successfully!',
     deleteSuccess: 'Item deleted successfully!',
+    pointsEarned: 'Points Earned',
+    levelUp: 'Level Up!',
     
     // Kuwaiti slang
     allSet: 'All set, yalla!',
@@ -147,6 +149,8 @@ export const translations = {
     loginError: 'فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.',
     saveSuccess: 'تم حفظ التغييرات بنجاح!',
     deleteSuccess: 'تم حذف العنصر بنجاح!',
+    pointsEarned: 'النقاط المكتسبة',
+    levelUp: 'لقد ارتقيت!',
     
     // Kuwaiti slang
     allSet: 'خلاص، يالله!',

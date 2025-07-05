@@ -69,17 +69,17 @@ const SetupWizard = ({ isOpen, onClose }) => {
       content: (
         <div className="space-y-4">
           <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-            <h4 className="font-medium text-purple-900 dark:text-purple-300 mb-2">Update src/lib/supabase.js</h4>
+            <h4 className="font-medium text-purple-900 dark:text-purple-300 mb-2">Create .env file</h4>
             <p className="text-sm text-purple-800 dark:text-purple-300 mb-3">
-              Replace these lines with your actual credentials:
+              Add your Supabase credentials to <code>.env</code>:
             </p>
             <div className="bg-gray-900 p-3 rounded text-green-400 text-xs font-mono overflow-x-auto">
-              {`const SUPABASE_URL = 'https://your-project-id.supabase.co'
-const SUPABASE_ANON_KEY = 'your-anon-key'`}
+              {`VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key`}
             </div>
             <button
-              onClick={() => copyToClipboard(`const SUPABASE_URL = 'https://your-project-id.supabase.co'
-const SUPABASE_ANON_KEY = 'your-anon-key'`, 'config')}
+              onClick={() => copyToClipboard(`VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key`, 'config')}
               className="flex items-center space-x-2 mt-2 px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors"
             >
               <SafeIcon icon={copied === 'config' ? FiCheck : FiCopy} className="w-3 h-3" />

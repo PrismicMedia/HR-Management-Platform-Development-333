@@ -29,11 +29,11 @@ const ConnectionTroubleshooter = ({ isOpen, onClose }) => {
       title: 'Supabase Configuration',
       description: 'Validating Supabase URL and API key',
       test: async () => {
-        const url = import.meta.env.VITE_SUPABASE_URL || 'https://wwnavngjdvrwqhsnhpbp.supabase.co'
-        const key = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        const url = import.meta.env.VITE_SUPABASE_URL || 'https://your-project-id.supabase.co'
+        const key = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key'
         
         if (url.includes('your-project-id') || key.includes('your-anon-key')) {
-          return { success: false, message: 'Credentials not configured', solution: 'Update src/lib/supabase.js' }
+          return { success: false, message: 'Credentials not configured', solution: 'Update your .env file' }
         }
         
         return { success: true, message: 'Configuration looks good' }

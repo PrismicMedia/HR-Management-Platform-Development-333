@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
-// ✅ WORKING SUPABASE CONFIGURATION
-const SUPABASE_URL = 'https://wwnavngjdvrwqhsnhpbp.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bmF2bmdqZHZyd3Foc25ocGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NzYwNjIsImV4cCI6MjA2MTE1MjA2Mn0.9o8GjWTbROx7rCI3NwElnORRaCQppjAdvdFuUbDyOUY'
+// Read configuration from environment variables
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.warn('⚠️  Supabase environment variables are not configured correctly')
+}
 
 console.log('✅ Supabase: Configuration loaded successfully')
 console.log('📡 Project URL:', SUPABASE_URL)

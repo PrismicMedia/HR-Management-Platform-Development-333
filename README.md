@@ -116,6 +116,21 @@ npm run dev
 
 Visit `http://localhost:5173` to see HuRai in action!
 
+## 🗂️ Folder Structure
+
+```
+src/
+├── App.jsx             # Main router and providers
+├── common/             # Shared tiny components
+├── components/         # Reusable UI pieces
+├── hooks/              # Custom React hooks
+├── lib/                # Supabase client setup
+├── pages/              # Application pages
+├── services/           # Data service helpers
+├── store/              # Zustand state stores
+└── utils/              # Utility functions and translations
+```
+
 ## 🎨 Brand Guidelines
 
 ### Logo Usage

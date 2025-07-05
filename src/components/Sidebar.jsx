@@ -7,9 +7,9 @@ import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 
 const { 
-  FiHome, FiTrendingUp, FiCalendar, FiAward, FiFileText, 
-  FiUser, FiSettings, FiShield, FiLogOut, FiStar, FiClock, 
-  FiUsers, FiBarChart 
+  FiHome, FiTrendingUp, FiCalendar, FiAward, FiFileText,
+  FiUser, FiSettings, FiShield, FiLogOut, FiStar, FiClock,
+  FiUsers, FiBarChart, FiBook
 } = FiIcons;
 
 const Sidebar = ({ onClose }) => {
@@ -25,6 +25,7 @@ const Sidebar = ({ onClose }) => {
     { name: t('skills'), href: '/skills', icon: FiAward },
     { name: 'Team Collaboration', href: '/team', icon: FiUsers },
     { name: 'Analytics', href: '/analytics', icon: FiBarChart },
+    { name: t('sops'), href: '/sops', icon: FiBook },
     { name: t('payslips'), href: '/payslips', icon: FiFileText },
     { name: t('profile'), href: '/profile', icon: FiUser },
     { name: t('settings'), href: '/settings', icon: FiSettings },

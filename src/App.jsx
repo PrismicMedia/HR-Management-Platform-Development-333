@@ -19,6 +19,7 @@ import TeamCollaborationPage from './pages/TeamCollaboration';
 import Analytics from './pages/Analytics';
 import Payslips from './pages/Payslips';
 import AdminConsole from './pages/AdminConsole';
+import SOPs from './pages/SOPs';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import './App.css';
@@ -65,6 +66,7 @@ function App() {
                   <Route path="/team" element={<TeamCollaborationPage />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="/payslips" element={<Payslips />} />
+                  <Route path="/sops" element={<SOPs />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
                   {(user?.role === 'superadmin' || user?.role === 'manager') && (

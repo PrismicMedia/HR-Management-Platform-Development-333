@@ -108,6 +108,8 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
    - `migrations/001_create_tables.sql`
    - `migrations/002_default_permissions.sql`
    - `migrations/003_performance_reviews.sql`
+   - `migrations/004_audit_enhancements.sql`
+   - `migrations/005_sops.sql`
 
 ### 4. Launch Application
 ```bash

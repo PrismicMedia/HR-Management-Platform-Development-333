@@ -84,3 +84,15 @@ export const usePerformanceReviews = () => {
 
   return { getReviews, createReview, updateReview, getGoals, createGoal, updateGoal, deleteGoal, loading, error }
 }
+
+// SOP Management
+export const useSops = () => {
+  const { executeQuery, loading, error } = useSupabase()
+
+  const getSops = () => executeQuery(() => supabase.from('sops_hr_dash').select('*'))
+  const createSop = (data) => executeQuery(() => supabase.from('sops_hr_dash').insert([data]))
+  const updateSop = (id, data) => executeQuery(() => supabase.from('sops_hr_dash').update(data).eq('id', id))
+  const deleteSop = (id) => executeQuery(() => supabase.from('sops_hr_dash').delete().eq('id', id))
+
+  return { getSops, createSop, updateSop, deleteSop, loading, error }
+}

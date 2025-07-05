@@ -69,6 +69,24 @@ export const useTasks = () => {
   return { getTasks, createTask, updateTask, deleteTask, loading, error }
 }
 
+// KPI Management
+export const useKpis = () => {
+  const { executeQuery, loading, error } = useSupabase()
+
+  const getKpis = () => executeQuery(() => supabase.from('kpis_hr_dash').select('*'))
+  const updateKpi = async (id, kpiData) => {
+    const result = await executeQuery(() =>
+      supabase.from('kpis_hr_dash').update(kpiData).eq('id', id)
+    )
+    if (!result.error && kpiData.current_value >= kpiData.target_value) {
+      await supabase.from('gamification_points_hr_dash').insert([{ user_id: kpiData.user_id, action: 'kpi_completed', points: 5 }])
+    }
+    return result
+  }
+
+  return { getKpis, updateKpi, loading, error }
+}
+
 // Performance Reviews Management
 export const usePerformanceReviews = () => {
   const { executeQuery, loading, error } = useSupabase()
@@ -79,7 +97,15 @@ export const usePerformanceReviews = () => {
 
   const getGoals = () => executeQuery(() => supabase.from('goals_hr_dash').select('*'))
   const createGoal = (goalData) => executeQuery(() => supabase.from('goals_hr_dash').insert([goalData]))
-  const updateGoal = (id, goalData) => executeQuery(() => supabase.from('goals_hr_dash').update(goalData).eq('id', id))
+  const updateGoal = async (id, goalData) => {
+    const result = await executeQuery(() =>
+      supabase.from('goals_hr_dash').update(goalData).eq('id', id)
+    )
+    if (!result.error && (goalData.status === 'completed' || goalData.progress >= 100)) {
+      await supabase.from('gamification_points_hr_dash').insert([{ user_id: goalData.employee_id, action: 'goal_completed', points: 10 }])
+    }
+    return result
+  }
   const deleteGoal = (id) => executeQuery(() => supabase.from('goals_hr_dash').delete().eq('id', id))
 
   return { getReviews, createReview, updateReview, getGoals, createGoal, updateGoal, deleteGoal, loading, error }

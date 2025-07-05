@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from '../utils/translations';
+import { useGamificationStore } from '../store/gamificationStore';
 import KPICard from '../components/KPICard';
 import ActivityFeed from '../components/ActivityFeed';
 import NextActions from '../components/NextActions';
+import GamificationBadge from '../components/GamificationBadge';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 
@@ -13,6 +15,13 @@ const { FiCalendar, FiTrendingUp, FiUsers, FiAward, FiStar, FiZap } = FiIcons;
 const Dashboard = () => {
   const { user } = useAuthStore();
   const { t } = useTranslation();
+  const { points, fetchPoints } = useGamificationStore();
+
+  React.useEffect(() => {
+    if (user) {
+      fetchPoints(user.id);
+    }
+  }, [user, fetchPoints]);
 
   const stats = [
     {
@@ -122,6 +131,7 @@ const Dashboard = () => {
                     {user?.role?.replace('_', ' ')}
                   </span>
                 </div>
+                <GamificationBadge points={points} />
               </motion.div>
             </div>
           </div>

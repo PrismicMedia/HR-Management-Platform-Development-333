@@ -52,7 +52,8 @@ export const testConnection = async () => {
     return { 
       success: true, 
       message: 'Connected successfully',
-      responseTime
+      responseTime,
+      data
     }
     
   } catch (error) {

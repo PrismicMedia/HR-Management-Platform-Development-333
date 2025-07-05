@@ -18,7 +18,7 @@ export const initializeDatabase = async () => {
     
     console.log('✅ Database connection verified')
     return true
-
+    
   } catch (error) {
     console.error('❌ Database initialization error:', error)
     return false
@@ -44,6 +44,7 @@ export const userService = {
         .from('users_hr_dash')
         .insert([userData])
         .select()
+      
       if (error) throw error
       return data[0]
     } catch (error) {
@@ -59,6 +60,7 @@ export const userService = {
         .update(userData)
         .eq('id', id)
         .select()
+      
       if (error) throw error
       return data[0]
     } catch (error) {
@@ -87,6 +89,7 @@ export const leaveService = {
         .from('leave_requests_hr_dash')
         .insert([leaveData])
         .select()
+      
       if (error) throw error
       return data[0]
     } catch (error) {
@@ -115,6 +118,7 @@ export const skillsService = {
         .from('skills_hr_dash')
         .insert([skillData])
         .select()
+      
       if (error) throw error
       return data[0]
     } catch (error) {

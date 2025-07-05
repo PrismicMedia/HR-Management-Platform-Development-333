@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase, testConnection, healthCheck } from '../lib/supabase'
+import { supabase, testConnection } from '../lib/supabase'
 import { initializeDatabase } from '../services/database'
 import SafeIcon from '../common/SafeIcon'
 import * as FiIcons from 'react-icons/fi'

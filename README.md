@@ -106,7 +106,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 1. Create a new Supabase project
 2. Run the migration files in order:
    - `migrations/001_create_tables.sql`
-   - `migrations/002_default_permissions.sql`
+   - `migrations/002_default_permissions_production.sql`
    - `migrations/003_performance_reviews.sql`
 
 ### 4. Launch Application

@@ -102,7 +102,7 @@ const PerformanceReviews = () => {
     {
       id: 3,
       title: 'Lead Team Project',
-      description: 'Successfully lead a major project to demonstrate leadership skills',
+      description: 'Successfully led a major project to demonstrate leadership skills',
       category: 'behavioral',
       targetDate: '2024-08-31',
       status: 'active',

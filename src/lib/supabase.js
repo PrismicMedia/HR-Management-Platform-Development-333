@@ -34,7 +34,7 @@ export const testConnection = async () => {
     const startTime = Date.now()
     const { data, error } = await supabase
       .from('users_hr_dash')
-      .select('count')
+      .select('id')
       .limit(1)
     
     const responseTime = Date.now() - startTime

@@ -20,6 +20,7 @@ export const translations = {
     delete: 'Delete',
     add: 'Add',
     submit: 'Submit',
+    all: 'All',
     loading: 'Loading...',
     search: 'Search',
     filter: 'Filter',
@@ -55,6 +56,15 @@ export const translations = {
     intermediate: 'Intermediate',
     advanced: 'Advanced',
     expert: 'Expert',
+
+    // Notifications
+    notifications: 'Notifications',
+    markAllRead: 'Mark all read',
+    noNotifications: 'No notifications found',
+    unread: 'Unread',
+    highPriority: 'High Priority',
+    notificationSettings: 'Notification Settings',
+    markAsRead: 'Mark as read',
     
     // Messages
     loginSuccess: 'Login successful!',
@@ -86,6 +96,7 @@ export const translations = {
     delete: 'حذف',
     add: 'إضافة',
     submit: 'إرسال',
+    all: 'الكل',
     loading: 'جاري التحميل...',
     search: 'بحث',
     filter: 'تصفية',
@@ -121,6 +132,15 @@ export const translations = {
     intermediate: 'متوسط',
     advanced: 'متقدم',
     expert: 'خبير',
+
+    // Notifications
+    notifications: 'الإشعارات',
+    markAllRead: 'وضع الكل كمقروء',
+    noNotifications: 'لا توجد إشعارات',
+    unread: 'غير مقروء',
+    highPriority: 'أولوية عالية',
+    notificationSettings: 'إعدادات الإشعارات',
+    markAsRead: 'تعيين كمقروء',
     
     // Messages
     loginSuccess: 'تم تسجيل الدخول بنجاح!',
